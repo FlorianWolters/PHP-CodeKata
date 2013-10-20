@@ -1,0 +1,39 @@
+# .travis.yml
+#
+# YAML configuration file for the continuous integration platform "Travis CI".
+#
+# This program is free software: you can redistribute it and/or modify it under
+# the terms of the GNU Lesser General Public License as published by the Free
+# Software Foundation, either version 3 of the License, or (at your option) any
+# later version.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+# details.
+#
+# You should have received a copy of the GNU Lesser General Public License
+# along with this program. If not, see <http://gnu.org/licenses/lgpl.txt>.
+#
+# Author:    Florian Wolters <wolters.fl@gmail.com>
+# Copyright: 2013 Florian Wolters
+# License:   http://gnu.org/licenses/lgpl.txt LGPL-3.0+
+# Link:      http://github.com/FlorianWolters/PHP-CodeKata
+
+language: php
+
+php:
+  - 5.4
+  - 5.5
+
+before_script:
+  - composer install
+
+script: phpunit --coverage-text
+
+notifications:
+  email:
+    recipients:
+      - wolters.fl@gmail.com
+    on_success: change
+    on_failure: always

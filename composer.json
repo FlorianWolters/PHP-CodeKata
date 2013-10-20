@@ -1,0 +1,26 @@
+{
+    "name": "florianwolters/code-kata",
+    "description": "A code kata is an exercise in programming which helps a programmer hone their skills through practice and repetition.",
+    "type": "library",
+    "keywords": ["code kata", "educational"],
+    "homepage": "http://github.com/FlorianWolters/PHP-CodeKata",
+    "license": "LGPL-3.0+",
+    "authors": [
+      {
+        "name": "Florian Wolters",
+        "email": "wolters.fl@gmail.com",
+        "homepage": "http://blog.florianwolters.de",
+        "role": "Developer"
+      }
+    ],
+    "require": {
+        "php": ">=5.4"
+    },
+    "autoload": {
+        "psr-0": {
+            "FlorianWolters": [
+                "src/php"
+            ]
+        }
+    }
+}
