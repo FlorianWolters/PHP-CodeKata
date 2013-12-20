@@ -134,14 +134,14 @@ class BowlingGameTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param integer $n
+     * @param integer $times
      * @param integer $pins
      *
      * @return void
      */
-    private function rollMany($n, $pins)
+    private function rollMany($times, $pins)
     {
-        for ($i = 0; $i < $n; ++$i) {
+        for ($i = 0; $i < $times; ++$i) {
             $this->game->roll($pins);
         }
     }
