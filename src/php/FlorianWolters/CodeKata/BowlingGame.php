@@ -23,6 +23,13 @@ final class BowlingGame
     const NUMBER_OF_PINS = 10;
 
     /**
+     * The number of frames in a {@see BowlingGame}.
+     *
+     * @var integer
+     */
+    const NUMBER_OF_FRAMES = 10;
+
+    /**
      * The maximum number of rolls possible in a {@see BowlingGame}.
      *
      * The maximum number of rolls can be reached as follows:
@@ -42,11 +49,28 @@ final class BowlingGame
     private $rolls = [];
 
     /**
+     * The index of the current roll.
+     *
+     * @var integer
+     */
+    private $currentRoll = 0;
+
+    /**
      * The number of rolls left for this {@see BowlingGame}.
      *
      * @var integer
      */
-    private $rollsLeft = BowlingGame::MAXIMUM_NUMBER_OF_ROLLS;
+    private $rollsLeft = self::MAXIMUM_NUMBER_OF_ROLLS;
+
+    /**
+     * Creates a new instance of the {@see BowlingGame} class.
+     */
+    public function __construct()
+    {
+        for ($i = 0; $i < self::MAXIMUM_NUMBER_OF_ROLLS; ++$i) {
+            $this->rolls[$i] = 0;
+        }
+    }
 
     /**
      * Rolls a strike (10 pins).
@@ -57,7 +81,7 @@ final class BowlingGame
      */
     public function rollStrike()
     {
-        $this->roll(BowlingGame::NUMBER_OF_PINS);
+        $this->roll(self::NUMBER_OF_PINS);
     }
 
     /**
@@ -77,7 +101,7 @@ final class BowlingGame
         --$this->rollsLeft;
         $this->throwInvalidArgumentExceptionIfNoRollsLeft();
 
-        $this->rolls[] = $pins;
+        $this->rolls[$this->currentRoll++] = $pins;
     }
 
     /**
@@ -92,7 +116,7 @@ final class BowlingGame
      */
     private function throwInvalidArgumentExceptionIfNumberOfKnockedDownPinsIsInvalid($pins)
     {
-        if ($pins < 0 || $pins > BowlingGame::NUMBER_OF_PINS) {
+        if ($pins < 0 || $pins > self::NUMBER_OF_PINS) {
             throw new InvalidArgumentException(
                 'The specified number of knocked down pins is invalid.'
             );
@@ -123,12 +147,12 @@ final class BowlingGame
         $score = 0;
         $frameIndex = 0;
 
-        for ($frame = 0; $frame < BowlingGame::NUMBER_OF_PINS; ++$frame) {
+        for ($frame = 0; $frame < self::NUMBER_OF_FRAMES; ++$frame) {
             if (true === $this->isStrike($frameIndex)) {
-                $score += BowlingGame::NUMBER_OF_PINS + $this->strikeBonus($frameIndex);
+                $score += self::NUMBER_OF_PINS + $this->strikeBonus($frameIndex);
                 ++$frameIndex;
             } elseif (true === $this->isSpare($frameIndex)) {
-                $score += BowlingGame::NUMBER_OF_PINS + $this->spareBonus($frameIndex);
+                $score += self::NUMBER_OF_PINS + $this->spareBonus($frameIndex);
                 $frameIndex += 2;
             } else {
                 $score += $this->sumOfPinsInFrame($frameIndex);
@@ -148,7 +172,7 @@ final class BowlingGame
      */
     private function isStrike($frameIndex)
     {
-        return BowlingGame::NUMBER_OF_PINS === $this->rolls[$frameIndex];
+        return self::NUMBER_OF_PINS === $this->rolls[$frameIndex];
     }
 
     /**
@@ -173,7 +197,7 @@ final class BowlingGame
      */
     private function isSpare($frameIndex)
     {
-        return BowlingGame::NUMBER_OF_PINS === $this->sumOfPinsInFrame($frameIndex);
+        return self::NUMBER_OF_PINS === $this->sumOfPinsInFrame($frameIndex);
     }
 
     /**
