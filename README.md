@@ -36,7 +36,20 @@ A code kata is an exercise in programming which helps a programmer hone their sk
 
 Currently, the project contains the following code katas:
 
-* [Fizz Buzz](http://content.codersdojo.org/code-kata-catalogue/fizz-buzz)
+* [TheFizzBuzzKata](http://codingdojo.org/cgi-bin/wiki.pl?KataFizzBuzz)
+* [ThePrimeFactorsKata](http://butunclebob.com/ArticleS.UncleBob.ThePrimeFactorsKata)
+  I've modified the original *ThePrimeFactorsKata* from Robert C. Martin (*Uncle Bob*) as follows:
+  * My solution validates the specified argument.
+  * I do not refactor the two `while`-loops into two `for`-loops, since the code looks more complicated then.
+* [TheBowlingGameCata](http://butunclebob.com/ArticleS.UncleBob.TheBowlingGameKata)
+  I've modified the original *TheBowlingGameCata* from Robert C. Martin (*Uncle Bob*) as follows:
+  * My solution uses validation, whenever required.
+    **Note:** Correct validation for the allowed number of rolls is currently missing.
+  * My solution uses a constant instead of the magic number `10` for the number of pins.
+  * The `private` method `rollStrike` has been moved from the test class to the implementation class and its visibility was changed to `public`.
+  * The `private` method `sumOfBallsInFrame` has been renamed to `sumOfPinsInFrame`.
+  * Prefix incrementation (`++$i`) is used instead of postfix incrementation (`$i++`), where applicable.
+  * The method names of the test cases have been renamed to reflect their actual goal.
 
 ## Features
 
