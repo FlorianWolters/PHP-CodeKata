@@ -48,4 +48,35 @@ class PrimeFactorsTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($expected, $actual);
     }
+
+    /**
+     * @return array
+     */
+    public static function providerGenerateThrowsInvalidArgumentException()
+    {
+        return [
+            [0],
+            [-1],
+            [null],
+            [false],
+            [.1],
+            ['foo'],
+            [new \stdClass]
+        ];
+    }
+
+    /**
+     * @param integer $input
+     *
+     * @return void
+     *
+     * @coversDefaultClass generate
+     * @dataProvider providerGenerateThrowsInvalidArgumentException
+     * @expectedException \InvalidArgumentException
+     * @test
+     */
+    public function testGenerateThrowsInvalidArgumentExceptionForInvalidInput($input)
+    {
+        PrimeFactors::generate($input);
+    }
 }

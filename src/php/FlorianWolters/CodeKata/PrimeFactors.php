@@ -24,9 +24,15 @@ final class PrimeFactors
      *
      * @throws InvalidArgumentException If the specified argument is not an
      *                                  integer.
+     * @throws InvalidArgumentException If the specified argument is not a
+     *                                  positive number (`+1` to
+     *                                  `\PHP_INT_MAX`).
      */
     public static function generate($n)
     {
+        self::throwInvalidArgumentExceptionIfArgumentIsNotInteger($n);
+        self::throwInvalidArgumentExceptionIfArgumentIsNotPositiveNumber($n);
+
         $result = [];
         $candidate = 2;
 
@@ -40,5 +46,43 @@ final class PrimeFactors
         }
 
         return $result;
+    }
+
+    /**
+     * Throws an {@see InvalidArgumentException} if the specified value is not
+     * an integer.
+     *
+     * @param mixed $value The value to check.
+     *
+     * @return void
+     * @throws InvalidArgumentException If the specified value is not an
+     *                                  integer.
+     */
+    private static function throwInvalidArgumentExceptionIfArgumentIsNotInteger($value)
+    {
+        if (false === \is_int($value)) {
+            throw new InvalidArgumentException(
+                'The specified argument is not an integer.'
+            );
+        }
+    }
+
+    /**
+     * Throws an {@see InvalidArgumentException} if the specified value is not
+     * a positive number (`+1` to `\PHP_INT_MAX`).
+     *
+     * @param mixed $value The value to check.
+     *
+     * @return void
+     * @throws InvalidArgumentException If the specified value is not a positive
+     *                                  number.
+     */
+    private static function throwInvalidArgumentExceptionIfArgumentIsNotPositiveNumber($value)
+    {
+        if ($value < 1) {
+            throw new InvalidArgumentException(
+                'The specified argument is not a positive number.'
+            );
+        }
     }
 }
