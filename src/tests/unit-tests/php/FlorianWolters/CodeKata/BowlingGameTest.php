@@ -2,7 +2,7 @@
 namespace FlorianWolters\CodeKata;
 
 /**
- * Test class for {@link FizzBuzz}.
+ * Test class for the code kata *TheBowlingGame*.
  *
  * @author    Florian Wolters <wolters.fl@gmail.com>
  * @copyright 2013 Florian Wolters
@@ -10,88 +10,148 @@ namespace FlorianWolters\CodeKata;
  * @link      http://github.com/FlorianWolters/PHP-CodeKata
  * @since     Class available since Release 0.1.0
  *
- * @covers    FlorianWolters\CodeKata\FizzBuzz
+ * @covers    FlorianWolters\CodeKata\BowlingGame
  */
-class FizzBuzzTest extends \PHPUnit_Framework_TestCase
+class BowlingGameTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @return array
+     * The {@see BowlingGame} instance under test.
+     *
+     * @var BowlingGame
      */
-    public static function providerCalculateAsString()
+    private $game;
+
+    /**
+     * @return void
+     */
+    public function setUp()
     {
-        return [
-            [1, 1],
-            [2, 2],
-            [3, FizzBuzz::FIZZ_WORD],
-            [4, 4],
-            [5, FizzBuzz::BUZZ_WORD],
-            [6, FizzBuzz::FIZZ_WORD],
-            [7, 7],
-            [8, 8],
-            [9, FizzBuzz::FIZZ_WORD],
-            [10, FizzBuzz::BUZZ_WORD],
-            [15, FizzBuzz::FIZZBUZZ_WORD]
-        ];
+        $this->game = new BowlingGame;
     }
 
     /**
-     * @param integer        $input
-     * @param string|integer $expected
-     *
+     * @return void
+     */
+    public function testScoreForGutterGameIs0()
+    {
+        $this->rollMany(20, 0);
+        $this->assertEquals(0, $this->game->score());
+    }
+
+    /**
+     * @return void
+     */
+    public function testScoreForPerfectGameIs300()
+    {
+        $this->rollMany(12, 10);
+        $this->assertEquals(300, $this->game->score());
+    }
+
+    /**
+     * @return void
+     */
+    public function testScoreForAllOnesIs20()
+    {
+        $this->rollMany(20, 1);
+        $this->assertEquals(20, $this->game->score());
+    }
+
+    /**
+     * @return void
+     */
+    public function testScoreForOneSpareAnd3Is16()
+    {
+        $this->rollSpare();
+        $this->game->roll(3);
+        $this->rollMany(17, 0);
+
+        $this->assertEquals(16, $this->game->score());
+    }
+
+    /**
+     * @return void
+     */
+    public function testScoreForOneStrikeAnd3And4Is24()
+    {
+        $this->game->rollStrike();
+        $this->game->roll(3);
+        $this->game->roll(4);
+        $this->rollMany(16, 0);
+
+        $this->assertEquals(24, $this->game->score());
+    }
+
+    /**
      * @return void
      *
-     * @coversDefaultClass calculateAsString
-     * @dataProvider providerCalculateAsString
-     * @test
+     * @expectedException \InvalidArgumentException
      */
-    public function testCalculateAsString($input, $expected)
+    public function testScoreThrowsInvalidArgumentExceptionForMinus1()
     {
-        $fizzBuzz = new FizzBuzz;
-        $actual = $fizzBuzz->calculateAsString($input);
-
-        $this->assertEquals($expected, $actual);
-    }
-    
-    /**
-     * @return array
-     */
-    public static function providerCalculateAsArray()
-    {
-        return [
-            [
-                1,
-                10, [
-                    1,
-                    2,
-                    FizzBuzz::FIZZ_WORD,
-                    4,
-                    FizzBuzz::BUZZ_WORD,
-                    FizzBuzz::FIZZ_WORD,
-                    7,
-                    8,
-                    FizzBuzz::FIZZ_WORD,
-                    FizzBuzz::BUZZ_WORD
-                ]
-            ]
-        ];
+        $this->game->roll(-1);
     }
 
     /**
-     * @param integer $start
-     * @param integer $end
-     * @param array   $expected
-     *
      * @return void
      *
-     * @coversDefaultClass calculateAsArray
-     * @dataProvider providerCalculateAsArray
-     * @test
+     * @expectedException \InvalidArgumentException
      */
-    public function testCalculateAsArray($start, $end, $expected)
+    public function testScoreThrowsInvalidArgumentExceptionFor11()
     {
-        $fizzBuzz = new FizzBuzz;
-        $actual = $fizzBuzz->calculateAsArray($start, $end);
+        $this->game->roll(11);
+    }
 
-        $this->assertEquals($expected, $actual);
+    /**
+     * @return void
+     *
+     * @expectedException \LogicException
+     */
+    public function test21RollsForGutterGameThrowsLogicException()
+    {
+        $this->rollMany(21, 0);
+    }
+
+    /**
+     * @return void
+     *
+     * @expectedException \LogicException
+     */
+    public function testLogicExceptionForNineteenZeroesAndThreeStrikes()
+    {
+        $this->rollMany(19, 1);
+        $this->rollMany(3, 10);
+    }
+
+    /**
+     * @return void
+     *
+     * @expectedException \LogicException
+     */
+    public function test13RollsForPerfectGameThrowsLogicException()
+    {
+        $this->rollMany(13, 10);
+        $this->markTestSkipped();
+    }
+
+    /**
+     * @param integer $n
+     * @param integer $pins
+     *
+     * @return void
+     */
+    private function rollMany($n, $pins)
+    {
+        for ($i = 0; $i < $n; ++$i) {
+            $this->game->roll($pins);
+        }
+    }
+
+    /**
+     * @return void
+     */
+    private function rollSpare()
+    {
+        $this->game->roll(5);
+        $this->game->roll(5);
     }
 }

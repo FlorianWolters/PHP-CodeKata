@@ -2,9 +2,10 @@
 namespace FlorianWolters\CodeKata;
 
 use \InvalidArgumentException;
+use \LogicException;
 
 /**
- * The code kate {@see FizzBuzz}.
+ * The code kate {@see BowlingGame}.
  *
  * @author    Florian Wolters <wolters.fl@gmail.com>
  * @copyright 2013 Florian Wolters
@@ -12,113 +13,192 @@ use \InvalidArgumentException;
  * @link      http://github.com/FlorianWolters/PHP-CodeKata
  * @since     Class available since Release 0.1.0
  */
-final class FizzBuzz
+final class BowlingGame
 {
     /**
-     * Specifies when (multiplicity) to print the string "Fizz" instead of the
-     * number.
+     * The number of pins in a {@see BowlingGame}.
      *
      * @var integer
      */
-    const FIZZ_NUMBER = 3;
+    const NUMBER_OF_PINS = 10;
 
     /**
-     * The word "Fizz".
+     * The maximum number of rolls possible in a {@see BowlingGame}.
      *
-     * @var string
-     */
-    const FIZZ_WORD = "Fizz";
-
-    /**
-     * Specifies when (multiplicity) to print the string "Buzz" instead of the
-     * number.
+     * The maximum number of rolls can be reached as follows:
+     * * Bowl 18-times a `0` to `9`.
+     * * Bowl a *Spare* in the 10th frame to get the additional roll.
+     * * Bowl anything in the additional roll.
      *
      * @var integer
      */
-    const BUZZ_NUMBER = 5;
+    const MAXIMUM_NUMBER_OF_ROLLS = 21;
 
     /**
-     * The word "Buzz".
+     * The number of pins for each roll.
      *
-     * @var string
+     * @var array
      */
-    const BUZZ_WORD = "Buzz";
+    private $rolls = [];
 
     /**
-     * The word "FizzBuzz".
+     * The number of rolls left for this {@see BowlingGame}.
      *
-     * @var string
+     * @var integer
      */
-    const FIZZBUZZ_WORD = 'FizzBuzz';
+    private $rollsLeft = BowlingGame::MAXIMUM_NUMBER_OF_ROLLS;
 
     /**
-     * Runs "FizzBuzz" with the specified number.
+     * Rolls a strike (10 pins).
      *
-     * @param integer $input The number to check.
-     *
-     * @return string|integer Either the input number, the string "Fizz", the
-     *                        string "Buzz" or the string "FizzBuzz".
-     *
-     * @throws InvalidArgumentException If the specified number is not an
-     *                                  integer.
-     */
-    public function calculateAsString($input)
-    {
-        $this->throwInvalidArgumentExceptionIfInputIsInvalid($input);
-
-        $result = '';
-
-        if (0 === ($input % self::FIZZ_NUMBER)) {
-            $result = self::FIZZ_WORD;
-        }
-
-        if (0 === ($input % self::BUZZ_NUMBER)) {
-            $result .= self::BUZZ_WORD;
-        }
-
-        if ('' === $result) {
-            $result = $input;
-        }
-
-        return $result;
-    }
-
-    /**
-     * Throws an {@see InvalidArgumentException} if the specified value is not
-     * an integer.
-     *
-     * @param mixed $value The value to check.
+     * Calling this method has the same effect as calling {@see roll(10)}.
      *
      * @return void
-     *
-     * @throws InvalidArgumentException If the specified number is not an
-     *                                  integer.
      */
-    private function throwInvalidArgumentExceptionIfInputIsInvalid($value)
+    public function rollStrike()
     {
-        if (false === \is_int($value)) {
-            throw new InvalidArgumentException;
+        $this->roll(BowlingGame::NUMBER_OF_PINS);
+    }
+
+    /**
+     * Rolls the specified number of pins.
+     *
+     * @param integer $pins The number of pins knocked down.
+     *
+     * @return void
+     * @throws InvalidArgumentException If the specified number of knocked down
+     *                                  pins is invalid.
+     */
+    public function roll($pins)
+    {
+        $this->throwInvalidArgumentExceptionIfNumberOfKnockedDownPinsIsInvalid($pins);
+
+        // TODO Fix detection for invalid number of rolls.
+        --$this->rollsLeft;
+        $this->throwInvalidArgumentExceptionIfNoRollsLeft();
+
+        $this->rolls[] = $pins;
+    }
+
+    /**
+     * Throws an {@see InvalidArgumentException} if the specified number of
+     * knocked down pins is invalid.
+     *
+     * @param integer $pins The number of pins knocked down.
+     *
+     * @return void
+     * @throws InvalidArgumentException If the specified number of knocked down
+     *                                  pins is invalid.
+     */
+    private function throwInvalidArgumentExceptionIfNumberOfKnockedDownPinsIsInvalid($pins)
+    {
+        if ($pins < 0 || $pins > BowlingGame::NUMBER_OF_PINS) {
+            throw new InvalidArgumentException(
+                'The specified number of knocked down pins is invalid.'
+            );
         }
     }
 
     /**
-     * Runs "FizzBuzz" with the specified range of numbers.
+     * Throws a {@see LogicException} if no more rolls are left in this {@see
+     * BowlingGame}.
      *
-     * @param integer $start The number to start with.
-     * @param integer $end   The number to end with.
-     *
-     * @return array An array, where each element contains either the input
-     *               number, the string "Fizz", the string "Buzz" or the string
-     *               "FizzBuzz".
+     * @return void
+     * @throws LogicException If no more rolls are left.
      */
-    public function calculateAsArray($start = 1, $end = 100)
+    private function throwInvalidArgumentExceptionIfNoRollsLeft()
     {
-        $result = [];
+        if (0 === $this->rollsLeft) {
+            throw new LogicException('No more rolls left.');
+        }
+    }
 
-        for ($i = $start; $i <= $end; ++$i) {
-            $result[] = $this->calculateAsString($i);
+    /**
+     * Returns the total score of this {@see BowlingGame}.
+     *
+     * @return integer The total score.
+     */
+    public function score()
+    {
+        $score = 0;
+        $frameIndex = 0;
+
+        for ($frame = 0; $frame < BowlingGame::NUMBER_OF_PINS; ++$frame) {
+            if (true === $this->isStrike($frameIndex)) {
+                $score += BowlingGame::NUMBER_OF_PINS + $this->strikeBonus($frameIndex);
+                ++$frameIndex;
+            } elseif (true === $this->isSpare($frameIndex)) {
+                $score += BowlingGame::NUMBER_OF_PINS + $this->spareBonus($frameIndex);
+                $frameIndex += 2;
+            } else {
+                $score += $this->sumOfPinsInFrame($frameIndex);
+                $frameIndex += 2;
+            }
         }
 
-        return $result;
+        return $score;
+    }
+
+    /**
+     * Checks whether a strike has been rolled in the specified frame.
+     *
+     * @param integer $frameIndex The index of the frame.
+     *
+     * @return bool `true` if a strike has been rolled, or `false` otherwise.
+     */
+    private function isStrike($frameIndex)
+    {
+        return BowlingGame::NUMBER_OF_PINS === $this->rolls[$frameIndex];
+    }
+
+    /**
+     * Calculates and returns the bonus score for a strike in the specified
+     * frame.
+     *
+     * @param integer $frameIndex The index of the frame.
+     *
+     * @return integer The bonus for the strike.
+     */
+    private function strikeBonus($frameIndex)
+    {
+        return $this->rolls[$frameIndex + 1] + $this->rolls[$frameIndex + 2];
+    }
+
+    /**
+     * Checks whether a spare has been rolled in the specified frame.
+     *
+     * @param integer $frameIndex The index of the frame.
+     *
+     * @return bool `true` if a spare has been rolled, or `false` otherwise.
+     */
+    private function isSpare($frameIndex)
+    {
+        return BowlingGame::NUMBER_OF_PINS === $this->sumOfPinsInFrame($frameIndex);
+    }
+
+    /**
+     * Calculates and returns the bonus score for a spare in the specified
+     * frame.
+     *
+     * @param integer $frameIndex The index of the frame.
+     *
+     * @return integer The bonus for the spare.
+     */
+    private function spareBonus($frameIndex)
+    {
+        return $this->rolls[$frameIndex + 2];
+    }
+
+    /**
+     * Calculates and returns the sum of the knocked down pins in the specified
+     * frame.
+     *
+     * @param integer $frameIndex The index of the frame.
+     *
+     * @return integer The sum of the knocked down pins.
+     */
+    private function sumOfPinsInFrame($frameIndex)
+    {
+        return $this->rolls[$frameIndex] + $this->rolls[$frameIndex + 1];
     }
 }
