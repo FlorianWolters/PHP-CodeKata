@@ -2,7 +2,7 @@
 namespace FlorianWolters\CodeKata;
 
 /**
- * Test class for {@link FizzBuzz}.
+ * Test class for {@see FizzBuzz}.
  *
  * @author    Florian Wolters <wolters.fl@gmail.com>
  * @copyright 2013 Florian Wolters

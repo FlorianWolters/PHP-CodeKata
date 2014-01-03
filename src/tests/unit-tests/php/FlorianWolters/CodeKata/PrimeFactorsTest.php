@@ -2,7 +2,7 @@
 namespace FlorianWolters\CodeKata;
 
 /**
- * Test class for {@link PrimeFactors}.
+ * Test class for {@see PrimeFactors}.
  *
  * @author    Florian Wolters <wolters.fl@gmail.com>
  * @copyright 2013 Florian Wolters
