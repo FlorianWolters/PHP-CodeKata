@@ -133,8 +133,8 @@ class BowlingGameTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param integer $times
-     * @param integer $pins
+     * @param int $times
+     * @param int $pins
      *
      * @return void
      */

@@ -32,8 +32,8 @@ class PrimeFactorsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param integer $input
-     * @param array   $expected
+     * @param int   $input
+     * @param array $expected
      *
      * @return void
      *
@@ -65,7 +65,7 @@ class PrimeFactorsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param integer $input
+     * @param int $input
      *
      * @return void
      *

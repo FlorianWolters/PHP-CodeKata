@@ -17,14 +17,14 @@ final class BowlingGame
     /**
      * The number of pins in a {@see BowlingGame}.
      *
-     * @var integer
+     * @var int
      */
     const NUMBER_OF_PINS = 10;
 
     /**
      * The number of frames in a {@see BowlingGame}.
      *
-     * @var integer
+     * @var int
      */
     const NUMBER_OF_FRAMES = 10;
 
@@ -36,7 +36,7 @@ final class BowlingGame
      * * Bowl a *Spare* in the 10th frame to get the additional roll.
      * * Bowl anything in the additional roll.
      *
-     * @var integer
+     * @var int
      */
     const MAXIMUM_NUMBER_OF_ROLLS = 21;
 
@@ -50,14 +50,14 @@ final class BowlingGame
     /**
      * The index of the current roll.
      *
-     * @var integer
+     * @var int
      */
     private $currentRoll = 0;
 
     /**
      * The number of rolls left for this {@see BowlingGame}.
      *
-     * @var integer
+     * @var int
      */
     private $rollsLeft = self::MAXIMUM_NUMBER_OF_ROLLS;
 
@@ -86,7 +86,7 @@ final class BowlingGame
     /**
      * Rolls the specified number of pins.
      *
-     * @param integer $pins The number of pins knocked down.
+     * @param int $pins The number of pins knocked down.
      *
      * @return void
      * @throws InvalidArgumentException If the specified number of knocked down
@@ -107,7 +107,7 @@ final class BowlingGame
      * Throws an {@see InvalidArgumentException} if the specified number of
      * knocked down pins is invalid.
      *
-     * @param integer $pins The number of pins knocked down.
+     * @param int $pins The number of pins knocked down.
      *
      * @return void
      * @throws InvalidArgumentException If the specified number of knocked down
@@ -139,7 +139,7 @@ final class BowlingGame
     /**
      * Returns the total score of this {@see BowlingGame}.
      *
-     * @return integer The total score.
+     * @return int The total score.
      */
     public function score()
     {
@@ -165,7 +165,7 @@ final class BowlingGame
     /**
      * Checks whether a strike has been rolled in the specified frame.
      *
-     * @param integer $frameIndex The index of the frame.
+     * @param int $frameIndex The index of the frame.
      *
      * @return bool `true` if a strike has been rolled, or `false` otherwise.
      */
@@ -178,9 +178,9 @@ final class BowlingGame
      * Calculates and returns the bonus score for a strike in the specified
      * frame.
      *
-     * @param integer $frameIndex The index of the frame.
+     * @param int $frameIndex The index of the frame.
      *
-     * @return integer The bonus for the strike.
+     * @return int The bonus for the strike.
      */
     private function strikeBonus($frameIndex)
     {
@@ -190,7 +190,7 @@ final class BowlingGame
     /**
      * Checks whether a spare has been rolled in the specified frame.
      *
-     * @param integer $frameIndex The index of the frame.
+     * @param int $frameIndex The index of the frame.
      *
      * @return bool `true` if a spare has been rolled, or `false` otherwise.
      */
@@ -203,9 +203,9 @@ final class BowlingGame
      * Calculates and returns the bonus score for a spare in the specified
      * frame.
      *
-     * @param integer $frameIndex The index of the frame.
+     * @param int $frameIndex The index of the frame.
      *
-     * @return integer The bonus for the spare.
+     * @return int The bonus for the spare.
      */
     private function spareBonus($frameIndex)
     {
@@ -216,9 +216,9 @@ final class BowlingGame
      * Calculates and returns the sum of the knocked down pins in the specified
      * frame.
      *
-     * @param integer $frameIndex The index of the frame.
+     * @param int $frameIndex The index of the frame.
      *
-     * @return integer The sum of the knocked down pins.
+     * @return int The sum of the knocked down pins.
      */
     private function sumOfPinsInFrame($frameIndex)
     {

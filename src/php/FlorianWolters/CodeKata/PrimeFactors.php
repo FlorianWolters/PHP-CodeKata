@@ -17,7 +17,7 @@ final class PrimeFactors
     /**
      * Returns the prime factors for the specified number.
      *
-     * @param integer $n The number whose prime factors to return.
+     * @param int $n The number whose prime factors to return.
      *
      * @return array The prime factors for the specified number.
      *

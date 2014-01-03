@@ -34,8 +34,8 @@ class FizzBuzzTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param integer        $input
-     * @param string|integer $expected
+     * @param int        $input
+     * @param string|int $expected
      *
      * @return void
      *
@@ -76,9 +76,9 @@ class FizzBuzzTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param integer $start
-     * @param integer $end
-     * @param array   $expected
+     * @param int   $start
+     * @param int   $end
+     * @param array $expected
      *
      * @return void
      *

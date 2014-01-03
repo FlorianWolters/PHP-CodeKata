@@ -17,7 +17,7 @@ final class FizzBuzz
      * Specifies when (multiplicity) to print the string "Fizz" instead of the
      * number.
      *
-     * @var integer
+     * @var int
      */
     const FIZZ_NUMBER = 3;
 
@@ -32,7 +32,7 @@ final class FizzBuzz
      * Specifies when (multiplicity) to print the string "Buzz" instead of the
      * number.
      *
-     * @var integer
+     * @var int
      */
     const BUZZ_NUMBER = 5;
 
@@ -53,10 +53,10 @@ final class FizzBuzz
     /**
      * Runs "FizzBuzz" with the specified number.
      *
-     * @param integer $input The number to check.
+     * @param int $input The number to check.
      *
-     * @return string|integer Either the input number, the string "Fizz", the
-     *                        string "Buzz" or the string "FizzBuzz".
+     * @return string|int Either the input number, the string "Fizz", the string
+     *                    "Buzz" or the string "FizzBuzz".
      *
      * @throws InvalidArgumentException If the specified number is not an
      *                                  integer.
@@ -103,8 +103,8 @@ final class FizzBuzz
     /**
      * Runs "FizzBuzz" with the specified range of numbers.
      *
-     * @param integer $start The number to start with.
-     * @param integer $end   The number to end with.
+     * @param int $start The number to start with.
+     * @param int $end   The number to end with.
      *
      * @return array An array, where each element contains either the input
      *               number, the string "Fizz", the string "Buzz" or the string

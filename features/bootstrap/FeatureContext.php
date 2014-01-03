@@ -78,8 +78,8 @@ class FeatureContext extends BehatContext
     }
 
     /**
-     * @param integer $times
-     * @param integer $pins
+     * @param int $times
+     * @param int $pins
      *
      * @return void
      */
