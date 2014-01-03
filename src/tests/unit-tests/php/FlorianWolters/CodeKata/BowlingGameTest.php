@@ -18,92 +18,117 @@ class BowlingGameTest extends \PHPUnit_Framework_TestCase
      *
      * @var BowlingGame
      */
-    private $game;
+    private $bowlingGame;
 
     /**
+     * Sets up the fixture.
+     *
+     * This method is called before a test is executed.
+     *
      * @return void
      */
     public function setUp()
     {
-        $this->game = new BowlingGame;
+        $this->bowlingGame = new BowlingGame;
     }
 
     /**
      * @return void
+     *
+     * @coversDefaultClass score
+     * @test
      */
     public function testScoreForGutterGameIs0()
     {
         $this->rollMany(20, 0);
-        $this->assertEquals(0, $this->game->score());
+        $this->assertEquals(0, $this->bowlingGame->score());
     }
 
     /**
      * @return void
+     *
+     * @coversDefaultClass score
+     * @test
      */
     public function testScoreForPerfectGameIs300()
     {
         $this->rollMany(12, 10);
-        $this->assertEquals(300, $this->game->score());
+        $this->assertEquals(300, $this->bowlingGame->score());
     }
 
     /**
      * @return void
+     *
+     * @coversDefaultClass score
+     * @test
      */
     public function testScoreForAllOnesIs20()
     {
         $this->rollMany(20, 1);
-        $this->assertEquals(20, $this->game->score());
+        $this->assertEquals(20, $this->bowlingGame->score());
     }
 
     /**
      * @return void
+     *
+     * @coversDefaultClass score
+     * @test
      */
     public function testScoreForOneSpareAnd3Is16()
     {
         $this->rollSpare();
-        $this->game->roll(3);
+        $this->bowlingGame->roll(3);
         $this->rollMany(17, 0);
 
-        $this->assertEquals(16, $this->game->score());
+        $this->assertEquals(16, $this->bowlingGame->score());
     }
 
     /**
      * @return void
+     *
+     * @coversDefaultClass score
+     * @test
      */
     public function testScoreForOneStrikeAnd3And4Is24()
     {
-        $this->game->rollStrike();
-        $this->game->roll(3);
-        $this->game->roll(4);
+        $this->bowlingGame->rollStrike();
+        $this->bowlingGame->roll(3);
+        $this->bowlingGame->roll(4);
         $this->rollMany(16, 0);
 
-        $this->assertEquals(24, $this->game->score());
+        $this->assertEquals(24, $this->bowlingGame->score());
     }
 
     /**
      * @return void
      *
+     * @coversDefaultClass roll
      * @expectedException \InvalidArgumentException
+     * @test
      */
-    public function testScoreThrowsInvalidArgumentExceptionForMinus1()
+    public function testRollThrowsInvalidArgumentExceptionForMinus1()
     {
-        $this->game->roll(-1);
+        $this->bowlingGame->roll(-1);
     }
 
     /**
      * @return void
      *
+     * @coversDefaultClass roll
      * @expectedException \InvalidArgumentException
+     * @test
      */
-    public function testScoreThrowsInvalidArgumentExceptionFor11()
+    public function testRollThrowsInvalidArgumentExceptionFor11()
     {
-        $this->game->roll(11);
+        $this->bowlingGame->roll(11);
     }
 
     /**
      * @return void
      *
+     * @coversDefaultClass roll
      * @expectedException \LogicException
+     * @test
      */
     public function test21RollsForGutterGameThrowsLogicException()
     {
@@ -113,7 +138,9 @@ class BowlingGameTest extends \PHPUnit_Framework_TestCase
     /**
      * @return void
      *
+     * @coversDefaultClass roll
      * @expectedException \LogicException
+     * @test
      */
     public function testLogicExceptionForNineteenZeroesAndThreeStrikes()
     {
@@ -124,7 +151,9 @@ class BowlingGameTest extends \PHPUnit_Framework_TestCase
     /**
      * @return void
      *
+     * @coversDefaultClass roll
      * @expectedException \LogicException
+     * @test
      */
     public function test13RollsForPerfectGameThrowsLogicException()
     {
@@ -141,7 +170,7 @@ class BowlingGameTest extends \PHPUnit_Framework_TestCase
     private function rollMany($times, $pins)
     {
         for ($i = 0; $i < $times; ++$i) {
-            $this->game->roll($pins);
+            $this->bowlingGame->roll($pins);
         }
     }
 
@@ -150,7 +179,7 @@ class BowlingGameTest extends \PHPUnit_Framework_TestCase
      */
     private function rollSpare()
     {
-        $this->game->roll(5);
-        $this->game->roll(5);
+        $this->bowlingGame->roll(5);
+        $this->bowlingGame->roll(5);
     }
 }
